@@ -23,6 +23,11 @@ const frequency = require('./routes/frequency.js');
 const priority = require('./routes/priority.js');
 const wage = require('./routes/wage.js');
 
+// Import Auth files
+const auth = require('./routes/auth/auth.js');
+const register = require('./routes/auth/register.js');
+const login = require('./routes/auth/login.js');
+
 // This is middleware called for all routes.
 // Middleware takes three parameters.
 app.use((req, res, next) => {
@@ -47,6 +52,11 @@ app.use("/company", company);
 app.use("/frequency", frequency);
 app.use("/priority", priority);
 app.use("/wage", wage);
+
+// Allocate Auth routes
+app.use("/auth", auth);
+app.use("/register", register);
+app.use("/login", login);
 
 // Add routes for 404 and error handling
 // Catch 404 and forward to error handler

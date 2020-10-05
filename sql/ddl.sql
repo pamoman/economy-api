@@ -4,6 +4,7 @@
 
 -- Drop tables in order to avoid FK constraint
 DROP VIEW IF EXISTS v_bill;
+DROP VIEW IF EXISTS v_person_accounts;
 
 --
 -- View - Bill
@@ -13,20 +14,18 @@ AS
 SELECT
     b.id AS bill_id,
     b.name AS bill_name,
-    b.amount AS bill_amount,
-    b.deadline AS bill_deadline,
-    b.ocr AS bill_ocr,
     b.category AS bill_category,
     b.priority AS bill_priority,
     b.frequency AS bill_frequency,
-    b.comments AS bill_comments,
+    b.payday AS bill_payday,
+    b.comment AS bill_comment,
     c.id AS company_id,
     c.name AS company_name,
     c.customer_id AS company_customer_id,
     c.giro AS company_giro,
     GROUP_CONCAT(bp.person_id) AS person_id,
-    b.paid AS bill_payed,
-    b.paid_date AS bill_payed_date
+    (SELECT COUNT(*) FROM finance WHERE finance.bill_id = b.id) AS is_finance,
+    (SELECT COUNT(*) FROM subscription WHERE subscription.bill_id = b.id) AS is_subscription
 FROM bill AS b
 
 JOIN company AS c
@@ -36,6 +35,44 @@ JOIN bill2person AS bp
     ON bp.bill_id = b.id
 
 GROUP BY bill_id;
+
+--
+-- View - Invoices
+--
+CREATE VIEW v_invoices
+AS
+SELECT
+	i.id AS invoice_id,
+    i.ocr AS incoice_ocr,
+    i.amount AS invoice_amount,
+    i.deadline AS incoice_deadline,
+    i.paid AS incoice_paid,
+    b.id AS bill_id,
+    b.name AS bill_name,
+    b.category AS bill_category,
+    b.priority AS bill_priority,
+    b.frequency AS bill_frequency,
+    b.payday AS bill_payday,
+    b.comment AS bill_comment,
+    c.id AS company_id,
+    c.name AS company_name,
+    c.customer_id AS company_customer_id,
+    c.giro AS company_giro,
+    GROUP_CONCAT(bp.person_id) AS person_id,
+    (SELECT COUNT(*) FROM finance WHERE finance.bill_id = b.id) AS is_finance,
+    (SELECT COUNT(*) FROM subscription WHERE subscription.bill_id = b.id) AS is_subscription
+FROM invoice AS i
+
+JOIN bill AS b
+    ON i.bill_id = b.id
+
+JOIN company AS c
+    ON b.company_id = c.id
+
+JOIN bill2person AS bp
+    ON b.id = bp.bill_id
+
+GROUP BY invoice_id;
 
 --
 -- View - Person accounts

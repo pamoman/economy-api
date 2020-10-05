@@ -9,4 +9,15 @@ router.get("/", async (req, res) => {
     );
 });
 
+// Person column route
+router.get("/:name/:value", async (req, res) => {
+    let name = req.params.name;
+    let value = req.params.value;
+    let where = `${name} = "${value}"`;
+
+    res.json(
+        await db.fetchAllWhere("person", where)
+    );
+});
+
 module.exports = router;
