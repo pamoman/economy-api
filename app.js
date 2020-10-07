@@ -15,6 +15,7 @@ const bodyParser = require("body-parser");
 const index = require('./routes/index.js');
 const person = require('./routes/person.js');
 const bill = require('./routes/bill.js');
+const invoice = require('./routes/invoice.js');
 const account = require('./routes/account.js');
 const allocation = require('./routes/allocation.js');
 const category = require('./routes/category.js');
@@ -45,6 +46,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 app.use("/", index);
 app.use("/person", person);
 app.use("/bill", bill);
+app.use("/invoice", invoice);
 app.use("/account", account);
 app.use("/allocation", allocation);
 app.use("/category", category);

@@ -97,21 +97,16 @@ INSERT INTO account2person(account_id, person_id) VALUES
 INSERT INTO company(name, customer_id, giro) VALUES
     ("Telia", "telia123", 0123456789),
     ("Nordea", "nordea123", 0123456789),
-    ("Ford", "ford123", 0123456789);
+    ("Ford", "ford123", 0123456789),
+    ("ST1", "st1123", 0123456789);
 
 --
 -- Add bills
 --
 INSERT INTO bill(name, company_id, account_id, category, priority, frequency, payday, comment) VALUES
     ("Bredband", 1, 5, "Drift", "High", 3, 27, "Fiber"),
-    ("Nas 882 Service", 3, 5, "Bil", "High", 1, 27, "Reperation");
-
---
--- Add invoices
---
-INSERT INTO invoice(bill_id, ocr, amount, deadline) VALUES
-    (1, 123456789, 359, "2020-10-27"),
-    (2, 123456789, 1000, "2020-10-27");
+    ("Nas 882 Service", 3, 5, "Bil", "High", 1, 27, "Reperation"),
+    ("Bensin", 4, 5, "Bil", "High", 1, 27, null);
 
 --
 -- Add finance (Part payment bills)
@@ -132,7 +127,23 @@ INSERT INTO bill2person(bill_id, person_id, allocation) VALUES
     (1, 1, 50),
     (1, 2, 50),
     (2, 1, 50),
-    (2, 2, 50);
+    (2, 2, 50),
+    (3, 1, 50),
+    (3, 2, 50);
+
+--
+-- Add invoices
+--
+INSERT INTO invoice(bill_id, ocr, amount, deadline) VALUES
+    (1, 123456789, 359, "2020-10-27"),
+    (2, 123456789, 1000, "2020-10-27");
+
+--
+-- Add paid invoices
+--
+INSERT INTO invoice(bill_id, ocr, amount, deadline, paid) VALUES
+    (3, 123456789, 2000, "2020-08-27", "2020-08-25"),
+    (3, 123456789, 3000, "2020-09-27", "2020-09-26");
 
 --
 -- Add wages
